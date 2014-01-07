@@ -14,19 +14,17 @@ import java.util.concurrent.atomic.*;
 public class Example7 implements Runnable {
 
     public static int[] numbers;
-    public static AtomicIntegerArray readlock;
-    public static AtomicInteger writelock;
+    public static AtomicInteger version;
+    public static AtomicBoolean writelock;
     
     public static void initializeNumbers(int x){
         numbers = new int[x];
         for(int i=0; i<x; i++)
             numbers[i] = i+1;
     }
-    
-    public static void initializeReadLocks(int n){
-        readlock = new AtomicIntegerArray(n);
-        for(int i=0; i<n; i++)
-            readlock.set(i, 0);
+    public static void initializeLocks(){
+        version = new AtomicInteger(0);
+        writelock = new AtomicBoolean(false);
     }
     
     private int id;
@@ -51,45 +49,33 @@ public class Example7 implements Runnable {
         System.out.println("Thread done result=" + result);
     }
     
-    void acquireRead(){
-        do{
-            readlock.set(id, 1);
-            if(writelock.get()==0){
-                break;
-            }
-            readlock.set(id, 0);
-            while(writelock.get()>0){}
-        }while(true);
-    }
-    
-    void releaseRead(){
-        readlock.set(id, 0);
+    int acquireRead(){
+        while(version.get() % 2 ==1){}
+        return version.get();
     }
     
     void acquireWrite(){
         do{
-            if(writelock.compareAndSet(0, 1)){
-                int readsum = writelock.get();
-                for(int i=0; i<readlock.length(); i++)
-                    readsum += readlock.get(i);
-
-                if(readsum == 1)
-                    break;
+            if(!writelock.get() && writelock.compareAndSet(false, true)){
+                version.getAndIncrement();
+                break;
             }
         }while(true);
-      
     }
     
     void releaseWrite(){
-        writelock.getAndDecrement();
+        version.getAndIncrement();
+        writelock.set(false);
     }
     
     void sumNumbers(){
-        acquireRead();
-        for(int i=0; i<numbers.length; i++){
-            sum += numbers[i];
-        }
-        releaseRead();
+        int v;
+        do{
+            v = acquireRead();
+            for(int i=0; i<numbers.length; i++){
+                sum += numbers[i];
+            }
+        } while(v!=version.get());
     }
     
     void loopSum(int arg){
@@ -110,8 +96,7 @@ public class Example7 implements Runnable {
         Thread[] threads = new Thread[n];
         
         initializeNumbers(x);
-        initializeReadLocks(n);
-        writelock = new AtomicInteger(0);
+        initializeLocks();
 
         for(int i=0; i<n; i++){
             Example7 e = new Example7(i, 10);

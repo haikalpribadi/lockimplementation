@@ -54,6 +54,18 @@ public class Example5 implements Runnable {
     void releaseRead(){
         lock.getAndDecrement();
     }
+    
+    void acquireWrite(){
+        do{
+           if(lock.get()==0 && lock.compareAndSet(0, -1))
+               break;
+        }while(true);
+    }
+    
+    void releaseWrite(){
+        lock.set(0);
+    }
+    
     void sumNumbers(){
         acquireRead();
         for(int i=0; i<numbers.length; i++){
