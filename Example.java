@@ -63,7 +63,7 @@ public class Example implements Runnable {
     Thread[] threads = new Thread[n];
 
     for(int i=0; i<n; i++){
-        Example e = new Example(140);
+        Example e = new Example(165);
         threads[i] = new Thread(e);
         threads[i].start();
     }
