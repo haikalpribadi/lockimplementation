@@ -1,0 +1,10 @@
+#/bin/bash
+
+i=1
+max=8
+
+while [ $i -le $max ]
+do
+	echo "Haikal "
+	((i++))
+done
