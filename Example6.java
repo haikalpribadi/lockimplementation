@@ -32,7 +32,7 @@ public class Example6 implements Runnable {
     private int id;
     public int arg;
     public int result;
-    public int sum;
+    public volatile int sum;
     
     // Constructor for an "Example" object.  Fields in the object can be
     // used to pass values to/from the thread when it is started and
@@ -94,7 +94,7 @@ public class Example6 implements Runnable {
     
     void loopSum(int arg){
         for(int i=0; i<arg; i++){
-            for(int j=0; j<100000; j++){
+            for(int j=0; j<5000; j++){
                 sumNumbers();
             }
         }
@@ -103,9 +103,10 @@ public class Example6 implements Runnable {
     // Main function
     public static void main(String args[]) {
         // Start a new thread, and then wait for it to complete:
-        System.out.println("Start ");
+        System.out.println("Start Example 6");
         int n = Integer.parseInt(args[0]);
         int x = Integer.parseInt(args[1]);
+        int d = Integer.parseInt(args[2]);
 
         Thread[] threads = new Thread[n];
         
@@ -114,7 +115,7 @@ public class Example6 implements Runnable {
         writelock = new AtomicInteger(0);
 
         for(int i=0; i<n; i++){
-            Example6 e = new Example6(i, 10);
+            Example6 e = new Example6(i, d);
             threads[i] = new Thread(e);
             threads[i].start();
         }
