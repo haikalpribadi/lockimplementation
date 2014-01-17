@@ -1,0 +1,30 @@
+#/bin/bash
+
+e=2
+javac Example$e.java
+
+e_delay=140
+threads=8
+array_min=5
+array_max=5000
+
+cat /dev/null >| runtimes
+cat /dev/null >| tempfile
+cat /dev/null >| tempfile2
+
+echo ""
+echo "=========== Running tests for Example" $e "==========="
+i=1
+while [ $i -le $threads ] 
+do
+	echo ""
+	echo "Example" $e "with" $i "threads"
+	/usr/bin/time -f "%e" -a -o tempfile java Example2 $i $e_delay
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
+	((i++))
+done
+
+cat tempfile | sed ':a;N;$!ba;s/\n/,/g' > runtimes
+rm tempfile

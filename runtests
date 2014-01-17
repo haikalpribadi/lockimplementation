@@ -17,13 +17,19 @@ threads=4
 array_min=5
 array_max=5000
 
+cat /dev/null >| runtimes
 cat /dev/null >| tempfile
+cat /dev/null >| tempfile2
 
 echo "=========== Running tests for Example 2 ==========="
 i=1
 while [ $i -le $threads ] 
 do
+	echo "Example 2 with " $i " threads"
 	/usr/bin/time -f "%e" -a -o tempfile java Example2 $i $e2_delay
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
 	((i++))
 done
 
@@ -32,6 +38,9 @@ i=1
 while [ $i -le $threads ]
 do
 	/usr/bin/time -f "%e" -a -o tempfile java Example3 $i $array_max $e3_delay
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
 	((i++))
 done
 
@@ -40,6 +49,9 @@ i=1
 while [ $i -le $threads ]
 do
 	/usr/bin/time -f "%e" -a -o tempfile java Example4 $i $array_max $e4_delay
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
 	((i++))
 done
 
@@ -48,6 +60,9 @@ i=1
 while [ $i -le $threads ]
 do
 	/usr/bin/time -f "%e" -a -o tempfile java Example5 $i $array_max $e5_delay
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
 	((i++))
 done
 
@@ -56,6 +71,9 @@ i=1
 while [ $i -le $threads ]
 do
 	/usr/bin/time -f "%e" -a -o tempfile java Example6 $i $array_max $e6_delay
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
 	((i++))
 done
 
@@ -64,6 +82,9 @@ i=1
 while [ $i -le $threads ]
 do
 	/usr/bin/time -f "%e" -a -o tempfile java Example7 $i $array_max $e7_delay
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
 	((i++))
 done
 
