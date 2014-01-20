@@ -52,11 +52,19 @@ public class Example4 implements Runnable {
         return result;
     }
     */
-    
+    /*
+    void acquireLock(){
+        while(true){
+            while(lock.get()){};
+            if(!lock.getAndSet(true))
+                return;
+        }
+    }
+    */
     void acquireLock(){
         do{
             while(lock.get()){}
-        }while(!lock.compareAndSet(false, true));
+        }while(!lock.getAndSet(true));
     }
     
     void releaseLock(){
