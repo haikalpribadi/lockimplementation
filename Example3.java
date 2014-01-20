@@ -42,6 +42,7 @@ public class Example3 implements Runnable {
     }
 
     synchronized void sumNumbers(){
+    	sum = 0;
         for(int i=0; i<numbers.length; i++){
             sum += numbers[i];
         }
@@ -65,9 +66,11 @@ public class Example3 implements Runnable {
 
         Thread[] threads = new Thread[n];
         initializeNumbers(x);
-
+        
+        Example3 e = new Example3(d);
+        
         for(int i=0; i<n; i++){
-            Example3 e = new Example3(d);
+            
             threads[i] = new Thread(e);
             threads[i].start();
         }

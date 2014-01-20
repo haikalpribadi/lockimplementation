@@ -3,12 +3,12 @@
 e=2
 javac Example$e.java
 
-e_delay=140
+e_delay=165
 threads=8
 array_min=5
 array_max=5000
 
-cat /dev/null >| runtimes
+cat /dev/null >| runtimes2
 cat /dev/null >| tempfile
 cat /dev/null >| tempfile2
 
@@ -19,12 +19,12 @@ while [ $i -le $threads ]
 do
 	echo ""
 	echo "Example" $e "with" $i "threads"
-	/usr/bin/time -f "%e" -a -o tempfile java Example2 $i $e_delay
+	/usr/bin/time -f "%e" -a -o tempfile java Example$e $i $e_delay
 	cat tempfile
 	cat tempfile >> tempfile2
 	cat /dev/null >| tempfile
 	((i++))
 done
 
-cat tempfile | sed ':a;N;$!ba;s/\n/,/g' > runtimes
+cat tempfile2 | sed ':a;N;$!ba;s/\n/,/g' > runtimes2
 rm tempfile

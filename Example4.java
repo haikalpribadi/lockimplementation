@@ -41,41 +41,31 @@ public class Example4 implements Runnable {
         result = sum;
         System.out.println("Thread done result=" + result);
     }
-    
-    /*
-    boolean testAndSet(){
-        boolean result;
-        synchronized(Example4.class){
-            result = locked.get();
-            locked.set(true);
-        }
-        return result;
-    }
-    */
-    /*
-    void acquireLock(){
-        while(true){
-            while(lock.get()){};
-            if(!lock.getAndSet(true))
-                return;
-        }
-    }
-    */
-    void acquireLock(){
-        do{
-            while(lock.get()){}
-        }while(!lock.compareAndSet(false, true));
-    }
-    
-    void releaseLock(){
-        lock.set(false);
-    }
+	/*
+	void acquireLock(){
+		while(true){
+			while(lock.get()){};
+			if(!lock.compareAndSet(false,true))
+				return;
+		}
+	}*/
+	
+	void acquireLock(){
+		do{
+			while(lock.get());
+		}while(!lock.compareAndSet(false,true));
+	}
+	
+	void releaseLock(){
+		lock.set(false);
+	}
+	
     void sumNumbers(){
-        acquireLock();
+		acquireLock();
         for(int i=0; i<numbers.length; i++){
             sum += numbers[i];
         }
-        releaseLock();
+		releaseLock();
     }
     
     void loopSum(int arg){

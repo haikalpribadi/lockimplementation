@@ -7,13 +7,22 @@ javac Example5.java
 javac Example6.java
 javac Example7.java
 
-e2_delay=165
 e3_delay=100
+e3_delay2=60000
+
 e4_delay=100
+e4_delay2=60000
+
 e5_delay=100
+e5_delay2=60000
+
 e6_delay=100
+e6_delay2=60000
+
 e7_delay=100
-threads=4
+e7_delay2=60000
+
+threads=8
 array_min=5
 array_max=5000
 
@@ -21,19 +30,17 @@ cat /dev/null >| runtimes
 cat /dev/null >| tempfile
 cat /dev/null >| tempfile2
 
-echo "=========== Running tests for Example 2 ==========="
+echo "=========== Running tests for Example 3, array = 5 ==========="
 i=1
-while [ $i -le $threads ] 
+while [ $i -le $threads ]
 do
-	echo "Example 2 with " $i " threads"
-	/usr/bin/time -f "%e" -a -o tempfile java Example2 $i $e2_delay
+	/usr/bin/time -f "%e" -a -o tempfile java Example3 $i $array_min $e3_delay2
 	cat tempfile
 	cat tempfile >> tempfile2
 	cat /dev/null >| tempfile
 	((i++))
 done
-
-echo "=========== Running tests for Example 3 ==========="
+echo "=========== Running tests for Example 3, array = 5000 ==========="
 i=1
 while [ $i -le $threads ]
 do
@@ -44,7 +51,17 @@ do
 	((i++))
 done
 
-echo "=========== Running tests for Example 4 ==========="
+echo "=========== Running tests for Example 4, array = 5 ==========="
+i=1
+while [ $i -le $threads ]
+do
+	/usr/bin/time -f "%e" -a -o tempfile java Example4 $i $array_min $e4_delay2
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
+	((i++))
+done
+echo "=========== Running tests for Example 4, array = 5000 ==========="
 i=1
 while [ $i -le $threads ]
 do
@@ -55,7 +72,19 @@ do
 	((i++))
 done
 
-echo "=========== Running tests for Example 5 ==========="
+
+echo "=========== Running tests for Example 5, array = 5 ==========="
+i=1
+while [ $i -le $threads ]
+do
+	/usr/bin/time -f "%e" -a -o tempfile java Example5 $i $array_min $e5_delay2
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
+	((i++))
+done
+
+echo "=========== Running tests for Example 5, array = 5000 ==========="
 i=1
 while [ $i -le $threads ]
 do
@@ -66,7 +95,18 @@ do
 	((i++))
 done
 
-echo "=========== Running tests for Example 6 ==========="
+
+echo "=========== Running tests for Example 6, array = 5 ==========="
+i=1
+while [ $i -le $threads ]
+do
+	/usr/bin/time -f "%e" -a -o tempfile java Example6 $i $array_min $e6_delay2
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
+	((i++))
+done
+echo "=========== Running tests for Example 6, array = 5000 ==========="
 i=1
 while [ $i -le $threads ]
 do
@@ -77,7 +117,19 @@ do
 	((i++))
 done
 
-echo "=========== Running tests for Example 7 ==========="
+
+echo "=========== Running tests for Example 7, array = 5 ==========="
+i=1
+while [ $i -le $threads ]
+do
+	/usr/bin/time -f "%e" -a -o tempfile java Example7 $i $array_min $e7_delay2
+	cat tempfile
+	cat tempfile >> tempfile2
+	cat /dev/null >| tempfile
+	((i++))
+done
+
+echo "=========== Running tests for Example 7, array = 5000 ==========="
 i=1
 while [ $i -le $threads ]
 do
@@ -89,5 +141,5 @@ do
 done
 
 
-cat tempfile | sed ':a;N;$!ba;s/\n/,/g' > runtimes
+cat tempfile2 | sed ':a;N;$!ba;s/\n/,/g' > runtimes
 rm tempfile

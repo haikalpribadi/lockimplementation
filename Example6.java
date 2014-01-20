@@ -94,7 +94,7 @@ public class Example6 implements Runnable {
     
     void loopSum(int arg){
         for(int i=0; i<arg; i++){
-            for(int j=0; j<5000; j++){
+            for(int j=0; j<300; j++){
                 sumNumbers();
             }
         }
