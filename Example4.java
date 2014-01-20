@@ -64,7 +64,7 @@ public class Example4 implements Runnable {
     void acquireLock(){
         do{
             while(lock.get()){}
-        }while(lock.compareAndSet(false, true));
+        }while(!lock.compareAndSet(false, true));
     }
     
     void releaseLock(){
